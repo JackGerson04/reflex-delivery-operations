@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Reflex Delivery Operations"
+description = "A delivery control center for Kenyan retailers that captures delivery requests, assigns riders, tracks status changes, and records proof of delivery across retailer, dispatcher, and rider workflows."
+version = "1.0.0"
+id = "artifacts/reflex"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25655
+
+[services.development]
+run = "pnpm --filter @workspace/reflex run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/reflex", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/reflex/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25655"
+BASE_PATH = "/"
